@@ -1,0 +1,56 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="12">
+            <item index="0" class="java.lang.String" itemvalue="hx-post" />
+            <item index="1" class="java.lang.String" itemvalue="hx-trigger" />
+            <item index="2" class="java.lang.String" itemvalue="x-show" />
+            <item index="3" class="java.lang.String" itemvalue="x-transition.opacity" />
+            <item index="4" class="java.lang.String" itemvalue="x-data" />
+            <item index="5" class="java.lang.String" itemvalue="@submit.prevent" />
+            <item index="6" class="java.lang.String" itemvalue="x-on:click" />
+            <item index="7" class="java.lang.String" itemvalue="x-text" />
+            <item index="8" class="java.lang.String" itemvalue="x-transition" />
+            <item index="9" class="java.lang.String" itemvalue="x-effect" />
+            <item index="10" class="java.lang.String" itemvalue="x-for" />
+            <item index="11" class="java.lang.String" itemvalue="@click" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="20">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="navbar" />
+            <item index="7" class="java.lang.String" itemvalue="hgroup" />
+            <item index="8" class="java.lang.String" itemvalue="cite" />
+            <item index="9" class="java.lang.String" itemvalue="custom-form" />
+            <item index="10" class="java.lang.String" itemvalue="custom-navbar" />
+            <item index="11" class="java.lang.String" itemvalue="highlight" />
+            <item index="12" class="java.lang.String" itemvalue="centered-div" />
+            <item index="13" class="java.lang.String" itemvalue="-o--" />
+            <item index="14" class="java.lang.String" itemvalue="dx" />
+            <item index="15" class="java.lang.String" itemvalue="mn-navbar-item" />
+            <item index="16" class="java.lang.String" itemvalue="user-profile" />
+            <item index="17" class="java.lang.String" itemvalue="movie-list" />
+            <item index="18" class="java.lang.String" itemvalue="comment-section" />
+            <item index="19" class="java.lang.String" itemvalue="app-header" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyInterpreterInspection" enabled="true" level="INFORMATION" enabled_by_default="true" />
+  </profile>
+</component>

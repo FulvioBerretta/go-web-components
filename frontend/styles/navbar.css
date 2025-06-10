@@ -1,0 +1,84 @@
+nav {
+    max-height: 100px;
+    position: fixed; /* Makes the div stay in its position relative to the viewport */
+    top: 0;          /* Aligns the div to the very top of the viewport */
+    left: 0;         /* Aligns the div to the very left of the viewport (useful for full-width) */
+    width: 100%;     /* Makes the div span the entire width of the viewport */
+    padding: var(--padding-size);   /* Example padding */
+    z-index: 1000;   /* Ensures the div stays on top of other content */
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow-soft);
+}
+
+
+mn-navbar-item {
+    padding: 0;
+    justify-content: space-evenly;
+
+}
+
+mark {
+    font-style: italic;
+}
+
+/* Links inside the navbar */
+navbar mn-navbar-item {
+    text-align: center;
+    padding: var(--padding-size);
+    text-decoration: none;
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset var(--box-shadow-soft);
+}
+
+
+
+
+/* Navigation bar */
+.navbarMenu {
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+
+    /* Making the menu to look pretty */
+    overflow: hidden;
+
+}
+
+/* Setting the items in 'li' tag to the center */
+/* Easy to add another 'li' tag into 'navbarMenu' */
+.navbarMenu li {
+
+
+    /* Animation transition */
+    background-color: var(--bone-white);
+    transition: background-color 0.5s ease;
+}
+.navbarMenu li:hover {
+    cursor: pointer;
+}
+
+/* Hover background color effect for each category*/
+#navSelect_MainMenu:hover {
+    background-color: var(--warm-green);
+}
+#navSelect_AboutMe:hover {
+    background-color: var(--warm-orange);
+}
+#navSelect_Contact:hover {
+    background-color: var(--warm-purple);
+}
+
+
+/* Add a red background color to navbar links on hover */
+navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: var(--highlighted-color);
+}
+
+
+
+

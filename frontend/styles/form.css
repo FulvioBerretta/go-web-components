@@ -1,0 +1,41 @@
+fieldset {
+    max-width: 400px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: var(---small-gap-size);
+    border-radius: var(--border-radius);
+}
+
+input {
+    min-height: 25px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    overflow: scroll;
+}
+
+a {
+    line-height: 4px;
+    font-size: 10px;
+    color: var(--sk-body-text-color);
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: var(--padding-size);
+}
+
+input::placeholder {
+    text-align: center;
+}
+
+textarea::placeholder {
+    text-align: center;
+}

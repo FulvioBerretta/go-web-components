@@ -1,0 +1,106 @@
+/* Basic CSS for Default Centering */
+
+/* 1. Ensure html and body take up the full viewport height */
+html, body {
+    height: 100%; /* Makes them take up 100% of the viewport height */
+    margin: 0;   /* Remove default body margin */
+    padding: 0;  /* Remove default body padding */
+    display: flex; /* Enable Flexbox on the body */
+    flex-direction: column; /* Arrange content in a column (top to bottom) */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Default text alignment for direct text nodes */
+}
+
+.pad {
+    padding: var(--padding-size);
+}
+
+.centered{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+.dx {
+     display: flex;
+     flex-direction: row;
+     align-content: center;
+}
+
+.u-full-width {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.u-max-full-width {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.u-pull-right {
+    float: right;
+}
+
+
+.u-pull-left {
+    float: left;
+}
+
+.flex {
+    display: flex;
+}
+
+.start {
+    align-content: flex-start;
+}
+
+.end {
+    align-content: flex-end;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.to-right {
+    align-items: end;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.reset-margin {
+    margin: 0;
+}
+
+.to-base {
+    vertical-align: bottom;
+    text-align: end;
+}
+
+.small-gap {
+    gap: var(---small-gap-size);
+}
+
+.medium-gap {
+    gap: var(---medium-gap-size)
+}
+
+.reset-margin {
+    margin: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
+}

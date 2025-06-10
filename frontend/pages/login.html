@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:x-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <!-- AlpineJS -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Pico.css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.classless.min.css">
+  <style>
+    [x-cloak] {
+      display: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+      max-width: 500px
+    }
+  </style>
+</head>
+<body class="container">
+<header>
+  <!-- navbar -->
+  <nav class="navigation">
+    <ul>
+      <hgroup x-show="open" x-transition>
+        <h2>Movie Plot For Dummies</h2>
+        <cite>Did you get that?</cite>
+      </hgroup>
+    </ul>
+    <ul>
+      <li><a href="#" class="contrast">Profile</a></li>
+      <li><a href="#" class="contrast">Services</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Products</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section>
+    <!-- Login Form-->
+    <form action="http://127.0.0.1:8080/v1/users/login" method="POST">
+      <fieldset>
+
+        <!--  username -->
+        <input
+                name="username"
+                placeholder="username"
+                autocomplete="username"
+        />
+
+        <!-- email -->
+        <input
+                type="password"
+                name="password"
+                placeholder="password"
+                autocomplete="password"
+        />
+        <br>
+        <small id="email-helper">
+        </small>
+      </fieldset>
+
+      <input
+              type="submit"
+              value="Login"
+      />
+    </form>
+  </section>
+</main>
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <!-- AlpineJS -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Pico.css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.classless.min.css">
+    <script src="../components/form.js" type="module"></script>
+    <script src="../components/navbar/Navbar.js" type="module"></script>
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="container">
+<header>
+    <custom-navbar></custom-navbar>
+</header>
+<main>
+    <!-- Login Form-->
+    <form action="http://127.0.0.1:8080/v1/users/login" method="POST">
+        <fieldset>
+
+            <!--  username -->
+            <input
+                    name="username"
+                    placeholder="username"
+                    autocomplete="username"
+            />
+
+            <!-- email -->
+            <input
+                    type="password"
+                    name="password"
+                    placeholder="password"
+                    autocomplete="password"
+            />
+            <br>
+            <small id="email-helper">
+            </small>
+        </fieldset>
+
+        <input
+                type="submit"
+                value="Login"
+        />
+    </form>
+</main>
+</body>
+</html>
+

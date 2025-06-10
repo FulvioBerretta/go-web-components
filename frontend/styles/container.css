@@ -1,0 +1,7 @@
+.container {
+    position: relative;
+    width: 100%;
+    background-color: #fafafc;
+    border-radius: 18px;
+    padding: 30px;
+}

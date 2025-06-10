@@ -1,0 +1,22 @@
+.button {
+    appearance: none;
+    cursor: pointer;
+    background-color: var(--element-background-color);
+    border: 1px solid var(--border-color);
+    isolation: isolate;
+    font-size: medium;
+    font-weight: normal;
+    color: var(--sk-body-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--padding-size);
+    border-radius: var(--border-radius-circle);
+    transition: all 200ms ease-out;
+}
+
+.button:hover {
+    background-color: var(--white-light);
+    transform: scale(1.01);
+    border-color: var(--highlighted-color);
+}
