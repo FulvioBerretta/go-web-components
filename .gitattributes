@@ -1,2 +1,2 @@
 # Ignora tutti i file HTML e JavaScript dal conteggio del linguaggio
-*.python linguist-detectable=false
+*.py linguist-detectable=false
