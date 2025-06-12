@@ -4,16 +4,19 @@ class Form extends HTMLElement {
      * containing the names of all attributes for which the element needs change notifications
      * @type {String[]}
      */
-    static observedAttributes = ['action-url'];
+        // Ora osserviamo solo 'action-url' e il nuovo attributo 'type'.
+        // Rimuoviamo 'registration' e 'login' come attributi booleani.
+    static observedAttributes = ['action-url', 'type'];
 
     constructor() {
         super();
     }
 
     connectedCallback() {
-        this.render();
+        this.render(); // Il rendering iniziale avviene qui
 
         // Defer event listener until DOM is fully attached
+        // Utilizzo requestAnimationFrame per assicurarsi che il DOM sia pronto
         requestAnimationFrame(() => {
             const form = this.querySelector('form');
             if (form) {
@@ -23,6 +26,17 @@ class Form extends HTMLElement {
             }
         });
     }
+
+    // `attributeChangedCallback` viene chiamato quando uno degli attributi osservati cambia.
+    // Lo usiamo per ri-renderizzare il componente quando il 'type' cambia.
+    attributeChangedCallback(name, oldValue, newValue) {
+        // Se l'attributo 'type' cambia, ri-renderizziamo il componente.
+        if (name === 'type' && oldValue !== newValue) {
+            this.render();
+        }
+        // Per 'action-url', `getAttribute` lo recupera già ogni volta nel handleSubmit.
+    }
+
     async handleSubmit(event) {
         event.preventDefault();
 
@@ -41,6 +55,8 @@ class Form extends HTMLElement {
         console.log('Data to be sent:', data); // LOG: Mostra l'oggetto dati
         console.log('JSON body:', JSON.stringify(data));
 
+        // Recupera l'actionUrl. Se il 'type' è 'registration', potresti voler usare un endpoint diverso
+        // es. actionUrl = `http://${this.getAttribute('action-url') || ''}/${formType}`;
         const actionUrl = `http://${this.getAttribute('action-url') || ''}`;
 
         try {
@@ -55,11 +71,11 @@ class Form extends HTMLElement {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Success:', result);
-                alert('Login successful!');
+                alert('Success!'); // Messaggio generico, puoi differenziarlo
             } else {
                 const errorText = await response.text();
                 console.error('Error:', response.status, errorText);
-                alert(`Login failed: ${response.status} - ${errorText}`);
+                alert(`Operation failed: ${response.status} - ${errorText}`);
             }
         } catch (error) {
             console.error('Network or CORS error:', error);
@@ -68,6 +84,34 @@ class Form extends HTMLElement {
     }
 
     render() {
+        // Recupera il valore dell'attributo 'type'. Default a una stringa vuota se non presente.
+        const formType = this.getAttribute('type') || '';
+
+        let linkText = '';
+        let linkHref = '';
+        let buttonValue = '';
+
+        // Utilizza uno switch o if/else if per gestire i diversi tipi di form.
+        switch (formType) {
+            case 'login':
+                linkText = 'Non sei ancora iscritto? Registrati';
+                linkHref = '../../pages/register.html'; // Assumendo una pagina di registrazione
+                buttonValue = 'Accedi'; // Modificato il testo del bottone in italiano
+                break;
+            case 'registration':
+                linkText = 'Sei già un membro? Accedi';
+                linkHref = '../../pages/login.html'; // Assumendo una pagina di login
+                buttonValue = 'Registrati'; // Modificato il testo del bottone in italiano
+                break;
+            // Puoi aggiungere altri casi qui per 'reset-password', 'profile-update', ecc.
+            default:
+                // Default se l'attributo 'type' non è presente o non riconosciuto
+                linkText = 'Gestisci Account';
+                linkHref = '#';
+                buttonValue = 'Invia'; // Modificato il testo del bottone in italiano
+                break;
+        }
+
         this.innerHTML = ` 
         <form>
             <fieldset class="flex column">
@@ -96,16 +140,16 @@ class Form extends HTMLElement {
                 />
                 <br>
                 <small id="email-helper">
-                    <a href="../../pages/login.html">Not yet subscribed? Register </a>
+                    <a href="${linkHref}">${linkText}</a>
                 </small>
                 <input
                     class ="button"
                     type="submit"
-                    value="Login"
+                    value="${buttonValue}"
                 />
             </fieldset>
         </form>
-        `
+        `;
     }
 }
 

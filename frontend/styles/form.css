@@ -13,7 +13,6 @@ input {
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     text-align: center;
-    overflow: scroll;
 }
 
 a {

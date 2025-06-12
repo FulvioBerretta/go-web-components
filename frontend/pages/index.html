@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <script src="../components/form/form.js" type="module"></script>
-    <script src="../components/navbar/Navbar.js" type="module"></script>
-    <script src="../components/movie-list/movie-list.element.js" type="module"></script>
-    <script src="../components/user-profile/user-profile.element.js" type="module"></script>
-    <script src="../components/comment-section/comment-section.element.js" type="module"></script>
-    <link   rel="stylesheet" href="../styles/index.css">
-</head>
-<body>
-    <custom-navbar></custom-navbar>
-<main>
-    <app-header></app-header>
-    <custom-form action-url="localhost:8081/users"></custom-form>
-</main>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+        <script src="../components/form/form.js" type="module"></script>
+        <script src="../components/navbar/Navbar.js" type="module"></script>
+        <script src="../components/movie-list/movie-list.element.js" type="module"></script>
+        <script src="../components/user-profile/user-profile.element.js" type="module"></script>
+        <script src="../components/comment-section/comment-section.element.js" type="module"></script>
+        <script src="../components/search-bar/SearchBar.js" type="module"></script>
+        <link rel="stylesheet" href="../styles/index.css">
+    </head>
+    <body>
+        <header>
+            <custom-navbar></custom-navbar>
+        </header>
+        <main>
+            <div class="flex column medium-gap">
+                <h4>Movie Plot For Dummies</h4>
+                <custom-search action-url="localhost:8081/movies" data-placeholder="Search Movies..."></custom-search>
+            </div>
+        </main>
+    </body>
 </html>

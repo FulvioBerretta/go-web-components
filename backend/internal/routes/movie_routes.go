@@ -12,6 +12,7 @@ func RegisterMovieRoutes(mux *http.ServeMux, movieRepo *repository.MovieReposito
 	mux.HandleFunc("POST /movies", handlers.CreateMovieHandler(movieRepo))
 	mux.HandleFunc("GET /movies/{id}", handlers.GetMovieHandler(movieRepo))
 	mux.HandleFunc("DELETE /movies/{id}", handlers.DeleteMovieHandler(movieRepo))
+	mux.HandleFunc("GET /movies", handlers.SearchMoviesHandler(movieRepo))
 	// User:Movie routes
 	//mux.HandleFunc("GET /users/{id}/movies", handlers.GetMoviesByUserIdHandler(movieRepo))
 }

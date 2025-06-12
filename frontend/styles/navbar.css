@@ -36,46 +36,29 @@ navbar mn-navbar-item {
 }
 
 
-
-
 /* Navigation bar */
 .navbarMenu {
     width: 40vw;
     height: 10vh;
     display: flex;
-
-    /* Making the menu to look pretty */
     overflow: hidden;
 
 }
 
 /* Setting the items in 'li' tag to the center */
 /* Easy to add another 'li' tag into 'navbarMenu' */
-.navbarMenu li {
-
-
+.navbarMenu mn-navbar-item {
     /* Animation transition */
     background-color: var(--bone-white);
     transition: background-color 0.5s ease;
 }
-.navbarMenu li:hover {
+.navbarMenu mn-navbar-item:hover {
     cursor: pointer;
-}
-
-/* Hover background color effect for each category*/
-#navSelect_MainMenu:hover {
-    background-color: var(--warm-green);
-}
-#navSelect_AboutMe:hover {
-    background-color: var(--warm-orange);
-}
-#navSelect_Contact:hover {
-    background-color: var(--warm-purple);
 }
 
 
 /* Add a red background color to navbar links on hover */
-navbar a:hover, .dropdown:hover .dropbtn {
+navbar mn-navbar-item:hover, .dropdown:hover .dropbtn {
     background-color: var(--highlighted-color);
 }
 

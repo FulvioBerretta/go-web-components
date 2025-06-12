@@ -4,12 +4,15 @@ import (
 	"fmt"
 	_ "github.com/mattn/go-sqlite3" // SQLite driver for database/sql
 	"log"
+	"main/internal/middlewares"
 	"main/internal/repository"
 	"main/internal/routes"
 	"net/http"
 )
 
 func main() {
+
+	// enabling CORS
 
 	userRepo, err := repository.NewUserRepository("./internal/db/tables/users.db")
 	if err != nil {
@@ -21,12 +24,14 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize movie repository: %v", err)
 	}
+
 	defer movieRepo.Close() // Ensure movie database connection is closed
 
 	mux := routes.NewRouter(userRepo, movieRepo)
+	handlerWithCORS := middlewares.CORSMiddleware(mux)
 
 	fmt.Println("Server starting on :8081")
-	err = http.ListenAndServe(":8081", mux)
+	err = http.ListenAndServe(":8081", handlerWithCORS)
 	if err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}

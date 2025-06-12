@@ -82,11 +82,15 @@ html, body {
 }
 
 .small-gap {
-    gap: var(---small-gap-size);
+    gap: var(--small-gap-size);
 }
 
 .medium-gap {
-    gap: var(---medium-gap-size)
+    gap: var(--medium-gap-size)
+}
+
+.large-gap {
+    gap: var(--large-gap-size)
 }
 
 .reset-margin {

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"main/internal/models"
 	"main/internal/repository"
 	"net/http"
@@ -85,5 +86,22 @@ func DeleteMovieHandler(movieRepo *repository.MovieRepository) http.HandlerFunc 
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
+func SearchMoviesHandler(movieRepo *repository.MovieRepository) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query().Get("q")
+
+		log.Printf("Received search query: %s", query)
+
+		foundMovies, err := movieRepo.SearchMoviesByTitle(query)
+		if err != nil {
+			http.Error(w, "Failed to search movies: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(foundMovies)
 	}
 }

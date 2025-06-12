@@ -1,77 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:x-on="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login</title>
-  <!-- AlpineJS -->
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-  <!-- Pico.css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.classless.min.css">
-  <style>
-    [x-cloak] {
-      display: none;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 100vh;
-      max-width: 500px
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="../components/form/form.js" type="module"></script>
+    <script src="../components/navbar/Navbar.js" type="module"></script>
+    <script src="../components/movie-list/movie-list.element.js" type="module"></script>
+    <script src="../components/user-profile/user-profile.element.js" type="module"></script>
+    <script src="../components/comment-section/comment-section.element.js" type="module"></script>
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
-<body class="container">
-<header>
-  <!-- navbar -->
-  <nav class="navigation">
-    <ul>
-      <hgroup x-show="open" x-transition>
-        <h2>Movie Plot For Dummies</h2>
-        <cite>Did you get that?</cite>
-      </hgroup>
-    </ul>
-    <ul>
-      <li><a href="#" class="contrast">Profile</a></li>
-      <li><a href="#" class="contrast">Services</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Products</a></li>
-    </ul>
-  </nav>
-</header>
+<body>
+<custom-navbar></custom-navbar>
 <main>
-  <section>
-    <!-- Login Form-->
-    <form action="http://127.0.0.1:8080/v1/users/login" method="POST">
-      <fieldset>
-
-        <!--  username -->
-        <input
-                name="username"
-                placeholder="username"
-                autocomplete="username"
-        />
-
-        <!-- email -->
-        <input
-                type="password"
-                name="password"
-                placeholder="password"
-                autocomplete="password"
-        />
-        <br>
-        <small id="email-helper">
-        </small>
-      </fieldset>
-
-      <input
-              type="submit"
-              value="Login"
-      />
-    </form>
-  </section>
+    <custom-form action-url="localhost:8081/users" type="login"></custom-form>
 </main>
 </body>
 </html>
-

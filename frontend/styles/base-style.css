@@ -34,15 +34,16 @@
     --element-background-color: rgba(246, 242, 242, 0.31) !important;
 
     /* fonts */
-    --font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+    --font-family: "Montserrat", sans-serif;
     --font-size: 62.5%;
 
     /* paddings */
     --padding-size: 14px;
 
     /* gaps */
-    ---small-gap-size: 10px;
-    ---medium-gap-size: 20px;
+    --small-gap-size: 10px;
+    --medium-gap-size: 20px;
+    --large-gap-size: 40px;
 
     /* box-shadow */
     --box-shadow-soft: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -51,15 +52,6 @@
     --border-radius: 0.5rem;
     --border-radius-circle: 0.99rem;
     --border-color: #d3d3d5 !important;
-}
-
-html {
-    font-size: var(--font-size)
-}
-
-body {
-    color: var(--sk-body-text-color,#1d1d1f);
-    border-radius: var(--border-radius);
 }
 
 

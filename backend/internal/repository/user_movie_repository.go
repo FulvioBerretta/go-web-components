@@ -108,3 +108,7 @@ func (um *UserMovieRepository) CheckUserHasMovie(userID, movieID int) (bool, err
 	}
 	return count > 0, nil
 }
+
+func (r *MovieRepository) GetAllMovies() ([]models.Movie, error) {
+	return r.SearchMoviesByTitle("")
+}

@@ -32,6 +32,8 @@ html {
     font-weight: 400;
     font-style: normal;
     letter-spacing: -.022em;
+    font-optical-sizing: auto;
+    color: var(--sk-body-text-color,#1d1d1f);
 }
 
 /**
