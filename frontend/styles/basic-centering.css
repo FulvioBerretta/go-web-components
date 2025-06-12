@@ -93,18 +93,6 @@ html, body {
     gap: var(--large-gap-size)
 }
 
-.reset-margin {
-    margin: 0;
-}
-
-.flex {
-    display: flex;
-}
-
-.row {
-    flex-direction: row;
-}
-
 .column {
     flex-direction: column;
 }

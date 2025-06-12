@@ -4,8 +4,11 @@ fieldset {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    gap: var(---small-gap-size);
+    gap: var(--small-gap-size);
     border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin: var(--margin-size);
+    padding: var(--padding-size);
 }
 
 input {
@@ -15,20 +18,10 @@ input {
     text-align: center;
 }
 
-a {
+form a {
     line-height: 4px;
     font-size: 10px;
     color: var(--sk-body-text-color);
-}
-
-/**
- * Define consistent border, margin, and padding.
- */
-
-fieldset {
-    border: 1px solid #c0c0c0;
-    margin: 0 2px;
-    padding: var(--padding-size);
 }
 
 input::placeholder {

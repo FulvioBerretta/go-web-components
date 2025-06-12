@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/mattn/go-sqlite3" // SQLite driver for database/sql
 	"log"
 	"main/internal/middlewares"
 	"main/internal/repository"
 	"main/internal/routes"
 	"net/http"
+
+	_ "github.com/mattn/go-sqlite3" // SQLite driver for database/sql
 )
 
 func main() {

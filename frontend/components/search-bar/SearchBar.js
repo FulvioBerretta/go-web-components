@@ -1,112 +1,144 @@
 class SearchBar extends HTMLElement {
-
     /**
-     * containing the names of all attributes for which the element needs change notifications
+     * An array containing the names of all attributes for which the element needs change notifications.
      * @type {String[]}
      */
     static observedAttributes = ['action-url', 'data-placeholder'];
 
+    /**
+     * Initializes the SearchBar element, setting up internal state.
+     * @constructor
+     */
     constructor() {
         super();
+        /**
+         * Stores the search results fetched from the API.
+         * @type {Array}
+         */
         this.searchResults = [];
+        /**
+         * The placeholder text for the search input, defaults to "Search...".
+         * @type {string}
+         */
         this.dataPlaceholder = this.getAttribute("data-placeholder") || "Search...";
+        /**
+         * The base URL for the search API endpoint.
+         * @type {string}
+         */
         this.actionUrlBase = '';
+        /**
+         * Timeout ID for debouncing search input.
+         * @type {number|null}
+         */
         this.debounceTimeout = null;
-        this.placeholderInterval = null; // Per gestire l'intervallo dell'animazione del placeholder
+        /**
+         * Interval ID for the placeholder animation.
+         * @type {number|null}
+         */
+        this.placeholderInterval = null;
     }
 
+    /**
+     * Called when the element is inserted into the DOM.
+     * Renders the component, initializes the action URL, attaches event listeners,
+     * and starts the placeholder animation.
+     */
     connectedCallback() {
         this.render();
+        this.initializeActionUrl();
+        this.attachEventListeners();
+        this.startPlaceholderAnimation();
+    }
 
+    /**
+     * Initializes the `actionUrlBase` property based on the 'action-url' attribute.
+     * Ensures the URL is valid and properly formatted (starts with http/https and no trailing slash).
+     * Logs an error if the 'action-url' attribute is missing or empty.
+     */
+    initializeActionUrl() {
         const rawActionUrl = this.getAttribute('action-url');
         if (rawActionUrl) {
-            if (!rawActionUrl.startsWith('http://') && !rawActionUrl.startsWith('https://')) {
-                this.actionUrlBase = `http://${rawActionUrl}`;
-            } else {
-                this.actionUrlBase = rawActionUrl;
-            }
-            if (this.actionUrlBase.endsWith('/')) {
-                this.actionUrlBase = this.actionUrlBase.slice(0, -1);
-            }
+            this.actionUrlBase = this.formatActionUrl(rawActionUrl);
         } else {
             console.error('ERROR: action-url attribute is missing or empty on custom-search element. Cannot perform search.');
             this.actionUrlBase = '';
         }
         console.log('SearchBar connectedCallback: actionUrlBase initialized to:', this.actionUrlBase);
-
-        this.attachEventListeners();
-        // Avvia l'animazione del placeholder
-        this.startPlaceholderAnimation();
     }
 
-    // Metodo per avviare o riavviare l'animazione del placeholder
-    startPlaceholderAnimation() {
-        if (this.placeholderInterval) {
-            clearInterval(this.placeholderInterval); // Pulisce qualsiasi animazione precedente
+    /**
+     * Formats a raw URL string by ensuring it starts with 'http://' or 'https://'
+     * and removes any trailing slashes.
+     * @param {string} rawUrl - The raw URL string from the attribute.
+     * @returns {string} The formatted URL.
+     */
+    formatActionUrl(rawUrl) {
+        let formattedUrl = rawUrl;
+        if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+            formattedUrl = `http://${formattedUrl}`;
         }
-        const searchInput = this.querySelector('#searchQueryInput');
-        if (searchInput) {
-            this.animatePlaceholder(this.dataPlaceholder, searchInput);
+        if (formattedUrl.endsWith('/')) {
+            formattedUrl = formattedUrl.slice(0, -1);
         }
+        return formattedUrl;
     }
 
+    /**
+     * Called when an observed attribute's value changes.
+     * Updates the component's state and re-renders or restarts animations as needed.
+     * @param {string} name - The name of the attribute that changed.
+     * @param {string} oldValue - The old value of the attribute.
+     * @param {string} newValue - The new value of the attribute.
+     */
     attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'data-placeholder' && oldValue !== newValue) {
-            this.dataPlaceholder = newValue || "Search...";
-            // Ri-renderizza per applicare il nuovo placeholder
-            this.render();
-            // Riavvia l'animazione con il nuovo testo del placeholder
-            this.startPlaceholderAnimation();
-        } else if (name === 'action-url' && oldValue !== newValue) {
-            if (newValue) {
-                if (!newValue.startsWith('http://') && !newValue.startsWith('https://')) {
-                    this.actionUrlBase = `http://${newValue}`;
-                } else {
-                    this.actionUrlBase = newValue;
-                }
-                if (this.actionUrlBase.endsWith('/')) {
-                    this.actionUrlBase = this.actionUrlBase.slice(0, -1);
-                }
-            } else {
-                this.actionUrlBase = '';
-            }
-            console.log('SearchBar attributeChangedCallback: actionUrlBase updated to:', this.actionUrlBase);
+        if (oldValue === newValue) {
+            return;
+        }
+
+        if (name === 'data-placeholder') {
+            this.updatePlaceholder(newValue);
+        } else if (name === 'action-url') {
+            this.updateActionUrl(newValue);
         }
     }
 
+    /**
+     * Updates the data placeholder and restarts the animation.
+     * @param {string} newValue - The new value for the placeholder.
+     */
+    updatePlaceholder(newValue) {
+        this.dataPlaceholder = newValue || "Search...";
+        this.render(); // Re-render to apply the new placeholder
+        this.startPlaceholderAnimation(); // Restart animation with new text
+    }
+
+    /**
+     * Updates the action URL base.
+     * @param {string} newValue - The new value for the action URL.
+     */
+    updateActionUrl(newValue) {
+        this.actionUrlBase = newValue ? this.formatActionUrl(newValue) : '';
+        console.log('SearchBar attributeChangedCallback: actionUrlBase updated to:', this.actionUrlBase);
+    }
+
+    /**
+     * Attaches event listeners to the search button and input field.
+     * Handles click events for the button and keyup events for the input,
+     * including debouncing for search queries and managing placeholder animation.
+     */
     attachEventListeners() {
         const searchButton = this.querySelector('#searchQuerySubmit');
         const searchInput = this.querySelector('#searchQueryInput');
 
         if (searchButton) {
-            searchButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                clearTimeout(this.debounceTimeout);
-                this.performSearch();
-            });
+            searchButton.addEventListener('click', this.handleSearchButtonClick.bind(this));
         } else {
             console.warn('Search button not found in SearchBar component.');
         }
 
         if (searchInput) {
-            searchInput.addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    clearTimeout(this.debounceTimeout);
-                    this.performSearch();
-                } else {
-                    // Quando l'utente inizia a digitare, ferma l'animazione del placeholder
-                    if (this.placeholderInterval) {
-                        clearInterval(this.placeholderInterval);
-                        this.placeholderInterval = null;
-                        searchInput.classList.remove('typing-animation-active'); // Rimuove la classe per il cursore
-                    }
-                    clearTimeout(this.debounceTimeout);
-                    this.debounceTimeout = setTimeout(() => {
-                        this.performSearch();
-                    }, 300);
-                }
-            });
-            // Esegui una ricerca iniziale se l'input ha già un valore al caricamento
+            searchInput.addEventListener('keyup', this.handleSearchInputKeyup.bind(this));
+            // Perform an initial search if the input already has a value on load
             if (searchInput.value.length > 0) {
                 this.performSearch();
             }
@@ -115,45 +147,97 @@ class SearchBar extends HTMLElement {
         }
     }
 
-    // Nuovo metodo per animare il placeholder lettera per lettera
+    /**
+     * Handles the click event on the search button.
+     * Prevents default form submission, clears any pending debounce timeout, and performs a search.
+     * @param {Event} event - The click event object.
+     */
+    handleSearchButtonClick(event) {
+        event.preventDefault();
+        clearTimeout(this.debounceTimeout);
+        this.performSearch();
+    }
+
+    /**
+     * Handles the keyup event on the search input field.
+     * Triggers a search on 'Enter' key press, otherwise debounces the search.
+     * Manages stopping and starting the placeholder animation during typing.
+     * @param {KeyboardEvent} event - The keyboard event object.
+     */
+    handleSearchInputKeyup(event) {
+        if (event.key === 'Enter') {
+            clearTimeout(this.debounceTimeout);
+            this.performSearch();
+        } else {
+            this.stopPlaceholderAnimation(); // Stop animation when user starts typing
+            clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = setTimeout(() => {
+                this.performSearch();
+            }, 300);
+        }
+    }
+
+    /**
+     * Starts or restarts the placeholder animation for the search input.
+     * Clears any existing animation interval before starting a new one.
+     */
+    startPlaceholderAnimation() {
+        this.stopPlaceholderAnimation(); // Clear any previous animation
+        const searchInput = this.querySelector('#searchQueryInput');
+        if (searchInput) {
+            this.animatePlaceholder(this.dataPlaceholder, searchInput);
+        }
+    }
+
+    /**
+     * Stops the currently running placeholder animation and removes the typing animation class.
+     */
+    stopPlaceholderAnimation() {
+        if (this.placeholderInterval) {
+            clearInterval(this.placeholderInterval);
+            this.placeholderInterval = null;
+            const searchInput = this.querySelector('#searchQueryInput');
+            if (searchInput) {
+                searchInput.classList.remove('typing-animation-active');
+            }
+        }
+    }
+
+    /**
+     * Animates the placeholder text letter by letter in the specified input element.
+     * @param {string} phrase - The full phrase to animate as a placeholder.
+     * @param {HTMLInputElement} el - The input element to apply the animation to.
+     */
     animatePlaceholder(phrase, el) {
         let index = 0;
-        el.placeholder = ''; // Pulisce il placeholder iniziale
-        el.classList.add('typing-animation-active'); // Aggiunge una classe per il cursore
+        el.placeholder = ''; // Clear initial placeholder
+        el.classList.add('typing-animation-active'); // Add class for caret animation
 
-        // Anima l'aggiunta di lettere
         this.placeholderInterval = setInterval(() => {
             el.placeholder = phrase.substring(0, index);
             index++;
 
             if (index > phrase.length) {
-                clearInterval(this.placeholderInterval); // Ferma l'animazione
-                this.placeholderInterval = null; // Resetta l'intervallo
-                // Non rimuovere la classe qui se vuoi che il cursore lampegghi dopo aver finito
+                this.stopPlaceholderAnimation(); // Stop the animation once finished
             }
-        }, 100); // Intervallo tra le lettere (100ms per un effetto più lento)
+        }, 100); // Interval between letters (100ms for a slower effect)
     }
 
+    /**
+     * Performs a search based on the current input query.
+     * Fetches data from the `actionUrlBase` and updates the search results display.
+     * Handles empty queries, configuration errors, and network/backend errors.
+     * @async
+     */
     async performSearch() {
-        const searchQuery = this.querySelector('#searchQueryInput').value;
+        const searchQuery = this.querySelector('#searchQueryInput').value.trim();
 
-        if (searchQuery.trim() === '') {
-            this.searchResults = [];
-            this.updateResultsDisplay('Digita un titolo per iniziare la ricerca...');
-            // Riavvia l'animazione se l'input diventa vuoto
-            this.startPlaceholderAnimation();
+        if (searchQuery === '') {
+            this.handleEmptySearchQuery();
             return;
         }
 
-        // Quando l'utente esegue una ricerca, ferma l'animazione del placeholder se attiva
-        if (this.placeholderInterval) {
-            clearInterval(this.placeholderInterval);
-            this.placeholderInterval = null;
-        }
-        const searchInput = this.querySelector('#searchQueryInput');
-        if (searchInput) {
-            searchInput.classList.remove('typing-animation-active'); // Rimuove la classe per il cursore
-        }
+        this.stopPlaceholderAnimation(); // Stop animation when user performs a search
 
         if (!this.actionUrlBase) {
             this.updateResultsDisplay('Configuration error: Search URL is missing. Please check the "action-url" attribute.');
@@ -161,10 +245,8 @@ class SearchBar extends HTMLElement {
         }
 
         const fetchUrl = `${this.actionUrlBase}?q=${encodeURIComponent(searchQuery)}`;
-
         console.log('Searching for:', searchQuery);
         console.log('Fetching from:', fetchUrl);
-        console.log('DEBUG: Final URL for fetch:', fetchUrl);
 
         try {
             const response = await fetch(fetchUrl, {
@@ -173,18 +255,7 @@ class SearchBar extends HTMLElement {
                     'Content-Type': 'application/json'
                 }
             });
-
-            if (response.ok) {
-                const results = await response.json();
-                this.searchResults = results;
-                this.updateResultsDisplay();
-                console.log('Search results:', results);
-            } else {
-                const errorText = await response.text();
-                console.error('Search failed:', response.status, errorText);
-                this.searchResults = [];
-                this.updateResultsDisplay(`Error: ${response.status} - ${errorText}`);
-            }
+            await this.handleSearchResponse(response);
         } catch (error) {
             console.error('Network or backend error during search:', error);
             this.searchResults = [];
@@ -192,14 +263,50 @@ class SearchBar extends HTMLElement {
         }
     }
 
+    /**
+     * Handles the case where the search query is empty.
+     * Clears search results and restarts the placeholder animation.
+     */
+    handleEmptySearchQuery() {
+        this.searchResults = [];
+        this.updateResultsDisplay(); // Clear results display
+        this.startPlaceholderAnimation();
+    }
+
+    /**
+     * Processes the response from the search API.
+     * Parses JSON results if successful, otherwise handles error responses.
+     * @param {Response} response - The fetch API response object.
+     * @async
+     */
+    async handleSearchResponse(response) {
+        if (response.ok) {
+            const results = await response.json();
+            this.searchResults = results;
+            this.updateResultsDisplay();
+            console.log('Search results:', results);
+        } else {
+            const errorText = await response.text();
+            console.error('Search failed:', response.status, errorText);
+            this.searchResults = [];
+            this.updateResultsDisplay(`Error: ${response.status} - ${errorText}`);
+        }
+    }
+
+    /**
+     * Updates the display of search results in the `mn-result-container`.
+     * Can display a message if no results or an error occurs.
+     * @param {string|null} message - An optional message to display instead of results.
+     */
     updateResultsDisplay(message = null) {
-        const resultsContainer = this.querySelector('#searchResults');
+        const resultsContainer = this.querySelector('mn-result-container');
         if (!resultsContainer) {
             console.warn('Search results container not found.');
             return;
         }
 
         resultsContainer.innerHTML = '';
+        resultsContainer.className = 'search-results-list'; // Ensure correct class
 
         if (message) {
             resultsContainer.innerHTML = `<p class="search-results-message">${message}</p>`;
@@ -211,35 +318,55 @@ class SearchBar extends HTMLElement {
             return;
         }
 
-        const ul = document.createElement('ul');
-        ul.className = 'search-results-list';
-
-        this.searchResults.forEach(movie => {
-            const li = document.createElement('li');
-            li.className = 'search-results-item';
-            li.textContent = `${movie.title} (${movie.length} min, Genere: ${movie.genre})`;
-            ul.appendChild(li);
-        });
-        resultsContainer.appendChild(ul);
+        this.populateResultsContainer(resultsContainer, this.searchResults);
     }
 
+    /**
+     * Populates the results container with movie cards based on search results.
+     * @param {HTMLElement} resultContainer - The container element to populate.
+     * @param {Array<Object>} searchResults - An array of movie data objects.
+     */
+    populateResultsContainer(resultContainer, searchResults) {
+        searchResults.forEach(movie => {
+            const movieCard = this.createMovieCard(movie);
+            resultContainer.appendChild(movieCard);
+        });
+    }
+
+    /**
+     * Creates an `<mn-card>` custom element for a given movie object.
+     * @param {Object} movie - The movie data object (e.g., {title, releaseDate, genre}).
+     * @returns {HTMLElement} The created `<mn-card>` element.
+     */
+    createMovieCard(movie) {
+        const card = document.createElement('mn-card');
+        card.setAttribute("title", movie.title);
+        card.setAttribute("release-date", movie.releaseDate);
+        card.setAttribute("genre", movie.genre);
+        return card;
+    }
+
+    /**
+     * Renders the initial HTML structure of the search bar, including the input,
+     * search button, and results container.
+     */
     render() {
-        this.innerHTML = ` 
+        this.innerHTML = `
         <div class="searchBar">
-            <input 
-                id="searchQueryInput" 
-                type="text" 
-                name="searchQueryInput" 
-                placeholder="${this.dataPlaceholder}" 
+            <input
+                id="searchQueryInput"
+                type="text"
+                name="searchQueryInput"
+                placeholder="${this.dataPlaceholder}"
                 value=""
-                />
+            />
             <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="#666666" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
               </svg>
             </button>
         </div>
-        <div id="searchResults" class="search-results-container">
-        </div>
+        <mn-result-container>
+            </mn-result-container>
         `;
     }
 }

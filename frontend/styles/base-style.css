@@ -36,9 +36,17 @@
     /* fonts */
     --font-family: "Montserrat", sans-serif;
     --font-size: 62.5%;
+    --font-weight: 400px;
+    --link-size: 40%;
+    --font-size-1: 5.0rem;
+    --font-size-2: 4.2rem;
+    --font-size-3: 3.6rem;
+    --font-size-4: 2.4rem;
+    --font-size-5: 1.5rem;
 
     /* paddings */
     --padding-size: 14px;
+    --padding-size-small: 6px;
 
     /* gaps */
     --small-gap-size: 10px;
@@ -52,6 +60,12 @@
     --border-radius: 0.5rem;
     --border-radius-circle: 0.99rem;
     --border-color: #d3d3d5 !important;
+
+    /* margins */
+    --margin-size: 0.67em;
+
+    /* cards */
+    --card-width: 150px;
 }
 
 

@@ -1,0 +1,20 @@
+mn-card {
+    max-width: var(--card-width);
+    max-height: var(--card-width);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: var(--small-gap-size);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin: var(--margin-size);
+    padding: var(--padding-size-small);
+}
+
+.card-title {
+    font-size: var(--font-size);
+}
+
+.release-date, .genre{
+    font-size: small;
+}

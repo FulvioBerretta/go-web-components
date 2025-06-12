@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"main/internal/models"
 	"strings"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type MovieRepository struct {

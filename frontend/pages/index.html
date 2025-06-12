@@ -5,21 +5,30 @@
         <title>Home</title>
         <script src="../components/form/form.js" type="module"></script>
         <script src="../components/navbar/Navbar.js" type="module"></script>
+        <script src="../components/navbar/NavbarLink.js" type="module"></script>
         <script src="../components/movie-list/movie-list.element.js" type="module"></script>
-        <script src="../components/user-profile/user-profile.element.js" type="module"></script>
         <script src="../components/comment-section/comment-section.element.js" type="module"></script>
         <script src="../components/search-bar/SearchBar.js" type="module"></script>
+        <script src="../components/result-container/result-container.js" type="module"></script>
+        <script src="../components/card/Card.js" type="module"></script>
+
         <link rel="stylesheet" href="../styles/index.css">
     </head>
     <body>
         <header>
-            <custom-navbar></custom-navbar>
+            <mn-navbar>
+                <mn-navbar-link href="login.html">Login</mn-navbar-link>
+                <mn-navbar-link href="register.html">Register</mn-navbar-link>
+            </mn-navbar>
         </header>
         <main>
             <div class="flex column medium-gap">
-                <h4>Movie Plot For Dummies</h4>
+                <h3>Movie Plots</h3>
                 <custom-search action-url="localhost:8081/movies" data-placeholder="Search Movies..."></custom-search>
             </div>
+            <mn-result-container>
+                Result Container
+            </mn-result-container>
         </main>
     </body>
 </html>
