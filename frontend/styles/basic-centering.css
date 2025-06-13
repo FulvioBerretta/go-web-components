@@ -22,6 +22,14 @@ html, body {
     text-align: center;
 }
 
+.fixed {
+    position: fixed;
+}
+
+.z-index{
+    z-index: 1000;
+}
+
 
 .dx {
      display: flex;

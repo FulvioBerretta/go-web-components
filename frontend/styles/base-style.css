@@ -37,6 +37,7 @@
     --font-family: "Montserrat", sans-serif;
     --font-size: 62.5%;
     --font-weight: 400px;
+    --font-weight-bold: 980px;
     --link-size: 40%;
     --font-size-1: 5.0rem;
     --font-size-2: 4.2rem;
@@ -55,6 +56,7 @@
 
     /* box-shadow */
     --box-shadow-soft: 0 1px 1px rgba(0, 0, 0, 0.1);
+    --box-shadow-soft-inset: inset 0px -3px 20px -14px rgba(0,0,0,0.25);
 
     /* borders*/
     --border-radius: 0.5rem;
@@ -65,7 +67,64 @@
     --margin-size: 0.67em;
 
     /* cards */
-    --card-width: 150px;
+    --card-width-large: 350px;
+    --card-width-small: 160px;
+    --card-height-small: 200px;
+
+    /* Definisci le altezze effettive dei tuoi elementi fissi */
+    --header-height: 60px; /* Misura o stima l'altezza della tua navbar */
+    --search-section-height: 120px; /* Misura o stima l'altezza di questa sezione (H3 + SearchBar + padding) */
+    --total-fixed-height: calc(var(--header-height) + var(--search-section-height));
+
+    /* ... le tue altre variabili come --padding-size, --small-gap-size, etc. ... */
+    --header-background-color: #333;
+    --search-background-color: #f0f0f0; /* Un colore di sfondo per la search section */
+    --main-background-color: #fff;
+}
+
+/* --- Stili per le Sezioni Fisse in Alto --- */
+.fixed-top-section {
+    position: fixed; /* Rimuove l'elemento dal flusso normale e lo fissa alla viewport */
+    left: 0;
+    width: 100%; /* Copre tutta la larghezza */
+    z-index: 1000; /* Assicura che siano sopra il contenuto che scorre */
+    box-sizing: border-box; /* Include padding e border nel width/height */
+}
+
+header.fixed-top-section {
+    top: 0;
+    height: var(--header-height); /* Altezza esatta */
+    background-color: var(--header-background-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: var(--padding-size-small) var(--padding-size);
+
+    display: flex;
+    justify-content: flex-end; /* Allinea la navbar a destra */
+    align-items: center; /* Centra verticalmente gli elementi della navbar */
+}
+
+.search-section.fixed-top-section {
+    top: var(--header-height); /* Posiziona questa sezione esattamente sotto l'header */
+    height: var(--search-section-height); /* Altezza esatta */
+    background-color: var(--search-background-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Ombra più leggera */
+    padding: var(--padding-size-small) var(--padding-size);
+
+    /* Stili per il contenuto interno (H3 e custom-search) */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra orizzontalmente i figli */
+    justify-content: center; /* Centra verticalmente i figli se c'è spazio */
+    gap: var(--small-gap-size); /* Spazio tra h3 e search bar */
+}
+
+/* --- Stili per il Contenuto Sotto le Sezioni Fisse --- */
+.content-below-fixed-sections {
+    /* Crea lo spazio necessario per evitare che il contenuto scorrevole si nasconda sotto le sezioni fisse */
+    margin-top: var(--total-fixed-height); /* Totale altezza dell'header + search bar */
+    padding: var(--padding-size); /* Un po' di padding per il contenuto che scorre */
+    background-color: var(--main-background-color);
+    min-height: calc(100vh - var(--total-fixed-height)); /* Assicura che il main sia almeno alto quanto il resto della viewport */
 }
 
 

@@ -5,13 +5,18 @@
   <title>Home</title>
   <script src="../components/form/form.js" type="module"></script>
   <script src="../components/navbar/Navbar.js" type="module"></script>
-  <script src="../components/movie-list/movie-list.element.js" type="module"></script>
-  <script src="../components/user-profile/user-profile.element.js" type="module"></script>
+  <script src="../components/navbar/NavbarLink.js" type="module"></script>
   <script src="../components/comment-section/comment-section.element.js" type="module"></script>
+  <script src="../components/search-bar/SearchBar.js" type="module"></script>
   <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-<custom-navbar></custom-navbar>
+<header>
+  <mn-navbar>
+    <mn-navbar-link href="login.html">Login</mn-navbar-link>
+    <mn-navbar-link href="register.html">Register</mn-navbar-link>
+  </mn-navbar>
+</header>
 <main>
   <custom-form action-url="localhost:8081/users" type="registration" ></custom-form>
 </main>

@@ -47,7 +47,6 @@ class SearchBar extends HTMLElement {
         this.render();
         this.initializeActionUrl();
         this.attachEventListeners();
-        this.startPlaceholderAnimation();
     }
 
     /**
@@ -109,7 +108,6 @@ class SearchBar extends HTMLElement {
     updatePlaceholder(newValue) {
         this.dataPlaceholder = newValue || "Search...";
         this.render(); // Re-render to apply the new placeholder
-        this.startPlaceholderAnimation(); // Restart animation with new text
     }
 
     /**
@@ -169,7 +167,6 @@ class SearchBar extends HTMLElement {
             clearTimeout(this.debounceTimeout);
             this.performSearch();
         } else {
-            this.stopPlaceholderAnimation(); // Stop animation when user starts typing
             clearTimeout(this.debounceTimeout);
             this.debounceTimeout = setTimeout(() => {
                 this.performSearch();
@@ -177,51 +174,7 @@ class SearchBar extends HTMLElement {
         }
     }
 
-    /**
-     * Starts or restarts the placeholder animation for the search input.
-     * Clears any existing animation interval before starting a new one.
-     */
-    startPlaceholderAnimation() {
-        this.stopPlaceholderAnimation(); // Clear any previous animation
-        const searchInput = this.querySelector('#searchQueryInput');
-        if (searchInput) {
-            this.animatePlaceholder(this.dataPlaceholder, searchInput);
-        }
-    }
 
-    /**
-     * Stops the currently running placeholder animation and removes the typing animation class.
-     */
-    stopPlaceholderAnimation() {
-        if (this.placeholderInterval) {
-            clearInterval(this.placeholderInterval);
-            this.placeholderInterval = null;
-            const searchInput = this.querySelector('#searchQueryInput');
-            if (searchInput) {
-                searchInput.classList.remove('typing-animation-active');
-            }
-        }
-    }
-
-    /**
-     * Animates the placeholder text letter by letter in the specified input element.
-     * @param {string} phrase - The full phrase to animate as a placeholder.
-     * @param {HTMLInputElement} el - The input element to apply the animation to.
-     */
-    animatePlaceholder(phrase, el) {
-        let index = 0;
-        el.placeholder = ''; // Clear initial placeholder
-        el.classList.add('typing-animation-active'); // Add class for caret animation
-
-        this.placeholderInterval = setInterval(() => {
-            el.placeholder = phrase.substring(0, index);
-            index++;
-
-            if (index > phrase.length) {
-                this.stopPlaceholderAnimation(); // Stop the animation once finished
-            }
-        }, 100); // Interval between letters (100ms for a slower effect)
-    }
 
     /**
      * Performs a search based on the current input query.
@@ -237,14 +190,12 @@ class SearchBar extends HTMLElement {
             return;
         }
 
-        this.stopPlaceholderAnimation(); // Stop animation when user performs a search
-
         if (!this.actionUrlBase) {
             this.updateResultsDisplay('Configuration error: Search URL is missing. Please check the "action-url" attribute.');
             return;
         }
 
-        const fetchUrl = `${this.actionUrlBase}?q=${encodeURIComponent(searchQuery)}`;
+        const fetchUrl = `${this.actionUrlBase}?q=${encodeURIComponent(searchQuery)}&limit=5`;
         console.log('Searching for:', searchQuery);
         console.log('Fetching from:', fetchUrl);
 
@@ -270,7 +221,6 @@ class SearchBar extends HTMLElement {
     handleEmptySearchQuery() {
         this.searchResults = [];
         this.updateResultsDisplay(); // Clear results display
-        this.startPlaceholderAnimation();
     }
 
     /**
@@ -299,7 +249,7 @@ class SearchBar extends HTMLElement {
      * @param {string|null} message - An optional message to display instead of results.
      */
     updateResultsDisplay(message = null) {
-        const resultsContainer = this.querySelector('mn-result-container');
+        const resultsContainer = document.querySelector('#global-search');
         if (!resultsContainer) {
             console.warn('Search results container not found.');
             return;
@@ -314,7 +264,6 @@ class SearchBar extends HTMLElement {
         }
 
         if (this.searchResults.length === 0) {
-            resultsContainer.innerHTML = `<p class="search-results-message">Nessun film trovato per la ricerca.</p>`;
             return;
         }
 
@@ -365,8 +314,6 @@ class SearchBar extends HTMLElement {
               </svg>
             </button>
         </div>
-        <mn-result-container>
-            </mn-result-container>
         `;
     }
 }

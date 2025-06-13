@@ -95,7 +95,19 @@ func SearchMoviesHandler(movieRepo *repository.MovieRepository) http.HandlerFunc
 
 		log.Printf("Received search query: %s", query)
 
-		foundMovies, err := movieRepo.SearchMoviesByTitle(query)
+		limitStr := r.URL.Query().Get("limit")
+		limit, err := strconv.Atoi(limitStr)
+		if err != nil || limit <= 0 { // Se c'è un errore o il limite è non valido, imposta un default
+			limit = 20 // Valore di default per il limite di risultati
+		}
+
+		offsetStr := r.URL.Query().Get("offset")
+		offset, err := strconv.Atoi(offsetStr)
+		if err != nil || offset < 0 { // Se c'è un errore o l'offset è non valido, imposta un default
+			offset = 0 // Valore di default per l'offset (inizio)
+		}
+
+		foundMovies, err := movieRepo.SearchMoviesByTitle(query, limit, offset)
 		if err != nil {
 			http.Error(w, "Failed to search movies: "+err.Error(), http.StatusInternalServerError)
 			return

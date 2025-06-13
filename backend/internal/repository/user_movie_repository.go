@@ -110,5 +110,5 @@ func (um *UserMovieRepository) CheckUserHasMovie(userID, movieID int) (bool, err
 }
 
 func (r *MovieRepository) GetAllMovies() ([]models.Movie, error) {
-	return r.SearchMoviesByTitle("")
+	return r.SearchMoviesByTitle("", 10, 0)
 }

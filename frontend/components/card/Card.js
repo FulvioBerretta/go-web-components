@@ -18,11 +18,21 @@ class Card extends HTMLElement {
         const title = this.getAttribute('title') || 'Untitled Movie';
         const releaseDate = this.getAttribute('release-date') || 'N/A';
         const genre = this.getAttribute('genre') || 'Unknown Genre';
+        const duration = this.getAttribute('duration') || 'N/A';
+
+        // URL dell'immagine placeholder migliorato: userà il titolo come testo
+        const placeholderImageUrl = `https://placehold.co/100x100/e0e0e0/333333?text=${encodeURIComponent(title.substring(0,15))}`; // Limita a 15 caratteri per leggibilità
 
         this.innerHTML = `
-            <div class="card-title">${title}</div>
-            <div class="release-date">Release Date: ${releaseDate}</div>
-            <div class="genre">Genre: ${genre}</div>
+            <div class="movie-card centered">
+                <img src="${placeholderImageUrl}" alt="Poster for ${title}" class="card-image">
+                <div class="card-content">
+                    <div class="card-title">${title}</div>
+                </div>
+                <button class="button-small">
+                    Add to Favorites
+                </button>
+            </div>
         `;
     }
 

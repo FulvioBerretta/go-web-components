@@ -1,0 +1,13 @@
+
+/* Stile per il contenitore delle card */
+mn-result-container{
+    display: flex;
+    flex-wrap: wrap; /* Le card andranno a capo su più righe */
+    justify-content: center; /* Centra le card all'interno del contenitore */
+    gap: var(--large-gap-size); /* Spazio tra le card */
+    padding: var(--spacing-unit); /* Padding intorno al contenitore */
+    width: 100%;
+    max-width: 1200px; /* Limita la larghezza massima del contenitore della lista */
+    margin-top: var(--large-gap-size); /* Spazio sopra la lista */
+    overflow-y: auto;
+}

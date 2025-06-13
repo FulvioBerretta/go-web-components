@@ -10,7 +10,36 @@
     align-items: center;
     padding: var(--padding-size);
     border-radius: var(--border-radius-circle);
-    transition: all 200ms ease-out;
+}
+
+.button-small {
+    /* Posizionamento assoluto per un controllo preciso dal bottom */
+    position: absolute;
+    bottom: var(--padding-size-small); /* QUI: la distanza desiderata dal bordo inferiore della card */
+    left: 50%; /* Sposta il punto di partenza al centro orizzontale */
+    transform: translateX(-50%); /* Sposta il bottone indietro del 50% della sua larghezza per centrarlo */
+
+    /* Le dimensioni del bottone e gli stili interni */
+    width: 100px;  /* Larghezza del bottone */
+    height: 30px; /* Altezza del bottone */
+    box-sizing: border-box;
+    margin: 0; /* Rimuovi margini esterni che potrebbero disturbare il posizionamento */
+    padding: var(--padding-size); /* Padding interno del bottone */
+
+    /* I tuoi stili esistenti per il bottone */
+    box-shadow: var(--box-shadow-soft-inset);
+    appearance: none;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    isolation: isolate;
+    color: var(--sk-body-text-color);
+    border-radius: var(--border-radius-circle);
+    z-index: 1; /* Assicurati che il bottone sia sopra il contenuto testuale */
+
+    /* Per centrare il testo "Add to Favorites" all'interno del bottone stesso */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button:hover {

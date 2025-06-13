@@ -100,20 +100,19 @@ func (r *MovieRepository) Delete(id int) (bool, error) {
 	return rowsAffected > 0, nil
 }
 
-func (r *MovieRepository) SearchMoviesByTitle(query string) ([]models.Movie, error) {
-	// DEBUG: Logga la query SQL e gli argomenti
+func (r *MovieRepository) SearchMoviesByTitle(query string, limit, offset int) ([]models.Movie, error) {
 	fmt.Printf("Inside SearchMoviesByTitle query: %s", query)
 	var sqlQuery string
 	var args []interface{}
 
 	if query == "" {
-		sqlQuery = `SELECT id, title, length, genre, release_date FROM movies`
+		sqlQuery = `SELECT id, title, length, genre, release_date FROM movies LIMIT $1 OFFSET $2`
+		args = []interface{}{limit, offset}
 	} else {
-		sqlQuery = `SELECT id, title, length, genre, release_date FROM movies WHERE lower(title) LIKE ?`
-		args = append(args, "%"+strings.ToLower(query)+"%")
+		sqlQuery = `SELECT id, title, length, genre, release_date FROM movies WHERE lower(title) LIKE $1 LIMIT $2 OFFSET $3`
+		args = []interface{}{"%" + strings.ToLower(query) + "%", limit, offset}
 	}
 
-	// DEBUG: Logga la query SQL e gli argomenti
 	fmt.Printf("Executing SQL query: %s with args: %v\n", sqlQuery, args)
 
 	rows, err := r.db.Query(sqlQuery, args...)
@@ -122,7 +121,6 @@ func (r *MovieRepository) SearchMoviesByTitle(query string) ([]models.Movie, err
 	}
 	defer rows.Close()
 
-	// Corretto: INIZIALIZZA LA SLICE COME VUOTA MA NON NIL
 	var movies []models.Movie = make([]models.Movie, 0)
 
 	for rows.Next() {
@@ -138,5 +136,5 @@ func (r *MovieRepository) SearchMoviesByTitle(query string) ([]models.Movie, err
 		return nil, fmt.Errorf("error during rows iteration: %w", err)
 	}
 
-	return movies, nil // Ora restituirà [] (array vuoto) se non ci sono film
+	return movies, nil
 }

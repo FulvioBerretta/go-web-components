@@ -6,7 +6,6 @@
         <script src="../components/form/form.js" type="module"></script>
         <script src="../components/navbar/Navbar.js" type="module"></script>
         <script src="../components/navbar/NavbarLink.js" type="module"></script>
-        <script src="../components/movie-list/movie-list.element.js" type="module"></script>
         <script src="../components/comment-section/comment-section.element.js" type="module"></script>
         <script src="../components/search-bar/SearchBar.js" type="module"></script>
         <script src="../components/result-container/result-container.js" type="module"></script>
@@ -21,13 +20,13 @@
                 <mn-navbar-link href="register.html">Register</mn-navbar-link>
             </mn-navbar>
         </header>
-        <main>
-            <div class="flex column medium-gap">
+
+        <main class="content-below-fixed-sections">
+            <div class="flex column centered">
                 <h3>Movie Plots</h3>
                 <custom-search action-url="localhost:8081/movies" data-placeholder="Search Movies..."></custom-search>
             </div>
-            <mn-result-container>
-                Result Container
+            <mn-result-container id="global-search" class="centered">
             </mn-result-container>
         </main>
     </body>

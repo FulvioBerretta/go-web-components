@@ -1,20 +1,118 @@
+/* --- Stili per la Card Stessa (mn-card) --- */
 mn-card {
-    max-width: var(--card-width);
-    max-height: var(--card-width);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    gap: var(--small-gap-size);
+    /* Le dimensioni fisse e l'overflow restano invariati, sono cruciali */
+    width: var(--card-width-small);
+    height: var(--card-height-small);
+    max-width: var(--card-width-small);
+    max-height: var(--card-height-small);
+
+    box-sizing: border-box; /* Include padding e border nella larghezza/altezza */
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     margin: var(--margin-size);
-    padding: var(--padding-size-small);
+    padding: var(--padding-size-small); /* Padding interno della card */
+
+    /* ESSENZIALE: Rende la card il "contesto di posizionamento" per gli elementi assoluti */
+    position: relative;
+    overflow: hidden; /* Taglia qualsiasi cosa all'interno della card che strabordi */
+
+    /* La card può essere flex-direction: column; ma solo per gestire il .card-content
+       Immagine e bottone sono fuori dal flusso flex normale quando sono absolute. */
+    display: flex;
+    flex-direction: column;
+    /* Rimuovi justify-content e align-items da qui, non servono per gli elementi assoluti */
+    /* justify-content: space-evenly; */
+    /* align-items: center; */
+
+    /* Il gap ora si applicherà solo agli elementi che rimangono nel flusso normale (es. .card-content) */
+    gap: var(--small-gap-size);
 }
 
+/* --- Stili per l'Immagine all'interno della Card --- */
+mn-card img {
+    /* Posizionamento assoluto per un controllo preciso dal top */
+    position: absolute;
+    top: var(--padding-size-small); /* QUI: la distanza desiderata dal bordo superiore della card */
+    left: 50%; /* Sposta il punto di partenza al centro orizzontale */
+    transform: translateX(-50%); /* Sposta l'immagine indietro del 50% della sua larghezza per centrarla */
+
+    width: 140px; /* Le tue dimensioni fisse per l'immagine */
+    height: 100px;
+    object-fit: cover;
+    z-index: 1; /* Assicurati che l'immagine sia sopra il contenuto testuale */
+}
+
+/* --- Stili per il Titolo della Card (.card-title) --- */
 .card-title {
     font-size: var(--font-size);
+    font-weight: bold; /* Spesso i titoli sono in grassetto */
+    line-height: 1.2em; /* Imposta una line-height per un calcolo preciso delle righe */
+
+    /* --- STRATEGIA CONSIGLIATA: TRONCARE IL TESTO SU PIÙ RIGHE CON "..." --- */
+    display: -webkit-box; /* Abilita il troncamento su più righe */
+    -webkit-line-clamp: 2; /* Limita il titolo a un massimo di 2 righe */
+    -webkit-box-orient: vertical; /* Indica l'orientamento del box (verticale per testo) */
+    overflow: hidden; /* Nasconde il testo che eccede il numero di righe */
+    text-overflow: ellipsis; /* Aggiunge "..." alla fine del testo troncato */
+
+    /* Per maggiore robustezza su browser non-webkit: */
+    max-height: 2.4em; /* (line-height * 2) - Funziona come fallback per limitare l'altezza */
+
+    /* Impedisce al titolo di rimpicciolirsi in un contenitore flex */
+    flex-shrink: 0;
 }
 
-.release-date, .genre{
+/* --- Stili per Data di Rilascio e Genere (.release-date, .genre) --- */
+.release-date,
+.genre {
     font-size: small;
+    white-space: nowrap; /* Mantiene il testo su una singola riga */
+    overflow: hidden; /* Nasconde qualsiasi testo che eccede */
+    text-overflow: ellipsis; /* Aggiunge "..." alla fine del testo troncato */
+    flex-shrink: 0; /* Impedisce all'elemento di rimpicciolirsi in un contenitore flex */
+}
+
+.card-content {
+    /* Creiamo lo spazio vuoto in alto e in basso per gli elementi assoluti. */
+    margin-top: calc(100px + var(--small-gap-size)); /* Altezza immagine (100px) + gap desiderato */
+    margin-bottom: calc(30px + var(--small-gap-size)); /* Altezza bottone (30px) + gap desiderato */
+
+    flex-grow: 1; /* Permette al .card-content di occupare tutto lo spazio verticale rimanente */
+
+    /* Rendiamo .card-content un contenitore flex per i suoi elementi interni (titolo, dettagli) */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Allinea il testo dall'alto */
+    gap: var(--small-gap-size); /* Gap tra titolo, release date, genre, etc. */
+
+    /* Assicurati che il contenuto testuale rispetti i padding orizzontali della card */
+    padding-left: var(--padding-size-small);
+    padding-right: var(--padding-size-small);
+    box-sizing: border-box;
+    width: 100%; /* Assicurati che occupi tutta la larghezza disponibile */
+}
+
+/* --- Stili per il Titolo della Card (.card-title) --- */
+.card-title {
+    font-size: var(--font-size);
+    font-weight: bold;
+    line-height: 1.2em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.4em;
+    flex-shrink: 0;
+    text-align: left; /* Il testo del titolo si allinea a sinistra all'interno del suo spazio */
+}
+
+/* --- Stili per i dettagli del Film (.card-detail-item) --- */
+.card-detail-item { /* Questa classe dovrebbe essere su Release Date, Genre, Duration */
+    font-size: small;
+    white-space: nowrap; /* Mantiene il testo su una singola riga */
+    overflow: hidden; /* Nasconde il testo eccedente */
+    text-overflow: ellipsis; /* Aggiunge "..." */
+    flex-shrink: 0;
+    text-align: left; /* Allinea a sinistra */
 }

@@ -1,5 +1,11 @@
+custom-search {
+    width: 320px;
+    height: 40px;
+    position: relative;
+    z-index: 1000;
+}
+
 .wrapper {
-    width: 100%;
     max-width: 31.25rem;
     margin: 6rem auto;
     border: 1px solid black;
@@ -14,10 +20,10 @@
 }
 
 .searchBar {
-    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    caret-color: transparent;
 }
 
 #searchQueryInput {
@@ -28,9 +34,21 @@
     border: none;
     border-radius: 1.625rem;
     padding: 0 3.5rem 0 1.5rem;
-    font-size: 1rem;
+    box-sizing: border-box;
+
+    /* Nasconde il cursore nativo del browser */
     caret-color: transparent;
+
+    /* Necessario per posizionare il pseudo-elemento del cursore */
+    position: relative;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem; /* Aumentato per visibilità */
+    color: #333; /* Colore del testo digitato */
 }
+
+
+
+
 
 #searchQuerySubmit {
     width: 3.5rem;
@@ -39,6 +57,7 @@
     background: none;
     border: none;
     outline: none;
+    z-index: 99;
 }
 
 #searchQuerySubmit:hover {
@@ -54,10 +73,10 @@
 }
 
 #searchQueryInput:focus {
-    border-color: indianred;
+    border: 2px solid var(--highlighted-color);
 }
 
-@keyframes typing {
-    from { max-width: 0 }
-    to { max-width: 100% }
+/* Stile per il testo del placeholder quando l'input ha il focus */
+#searchQueryInput:focus::placeholder {
+    color: transparent; /* Rende il testo del placeholder rosso quando l'input è in focus */
 }
