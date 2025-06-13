@@ -1,0 +1,110 @@
+.button {
+    transition: all 200ms ease-in-out;
+    animation: growing 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Pseudo-elemento per il cursore underscore */
+#searchQueryInput:focus::before {
+    content: '_'; /* Il carattere underscore */
+    position: absolute;
+    left: 1.5rem; /* Posiziona a sinistra del padding */
+    top: 50%; /* Centra verticalmente */
+    transform: translateY(-50%); /* Ajusta per centratura perfetta */
+    color: var(--highlighted-color, black); /* Colore del cursore */
+    font-size: 1.5rem; /* Deve corrispondere alla dimensione del font dell'input */
+    font-family: 'Fira Code', Courier, monospace; /* Assicurati che il font sia lo stesso */
+    animation: blink-underscore 1s step-end infinite; /* Animazione lampeggiante */
+    pointer-events: none; /* Impedisce che il cursore interferisca con gli eventi del mouse sull'input */
+    z-index: 2; /* Assicura che sia sopra il testo */
+}
+
+mn-navbar-link:hover {
+    transition: all 400ms ease-in;
+    animation: minimal-font-hover 0.9s;
+}
+
+custom-search input::placeholder {
+    font-family: inherit;
+    font-size: inherit;
+    /* Secures no overflow in anitmation */
+    overflow: hidden;
+    /* Keeps text in one line */
+    white-space: nowrap;
+
+    /* Animation steps interval of characters */
+    animation: placeholder-typing 8s steps(16) forwards;
+}
+
+custom-search input:focus {
+    border-bottom: 1px solid;
+    transition: all 200ms ease-in-out;
+    animation: growing 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes growing {
+    from {
+        opacity: 0.5;
+        transform: scale(0.8);
+        box-shadow: 0 0 0 0;
+        filter: drop-shadow(16px 16px 20px red) invert(75%);
+
+    }
+    to {
+        opacity: 1;
+        transform: scale(1); /* Arriva alla dimensione normale */
+        box-shadow: var(--box-shadow-soft);
+    }
+}
+
+@keyframes minimal-font-hover {
+    from {
+        opacity: 0.9;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+@keyframes placeholder-typing {
+    0% {
+        max-width: 0;
+        animation-timing-function: linear;
+    }
+    10% {
+        max-width: 8%;
+        animation-timing-function: linear;
+    }
+
+    15% {
+        max-width: 2%;
+    }
+    15.01% {
+        max-width: 8%;
+    }
+    30.01% {
+        max-width: 25%;
+        cubic-bezier(0.7, 0, 1, 0.3);
+    }
+    50.01% {
+        max-width: 70%;
+    }
+    100% {
+        max-width: 100%;
+        animation-timing-function: cubic-bezier(0.7, 0, 1, 0.3);
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+@keyframes blink-underscore {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
